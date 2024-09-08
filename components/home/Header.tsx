@@ -30,15 +30,15 @@ export default function Header() {
       </div>
 
       <div className="flex lg:justify-center gap-2 lg:gap-12 lg:items-center">
-        <NavLink href={"/#pricing"}>价格</NavLink>
-        <NavLink href={"/#posts"}>你的文章</NavLink>
+        <NavLink href={"/#pricing"}>Pricing</NavLink>
+        <NavLink href={"/#posts"}>Your Posts</NavLink>
       </div>
 
       <div className="flex lg:justify-end lg:flex-1">
         <div className="flex gap-2 items-center">
-          <NavLink href="/dashboard">上传视频</NavLink>
+          <NavLink href="/dashboard">Upload Video</NavLink>
           {/* Profile */}
-          <NavLink href="/sign-in">去登录</NavLink>
+          <NavLink href="/sign-in">Sign In</NavLink>
         </div>
       </div>
     </nav>
