@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Bot } from "lucide-react";
+import { SignedIn, SignedOut, SignInButton, UserButton } from "@clerk/nextjs";
 
 const NavLink = ({
   href,
@@ -31,15 +32,23 @@ export default function Header() {
 
       <div className="flex lg:justify-center gap-2 lg:gap-12 lg:items-center">
         <NavLink href={"/#pricing"}>Pricing</NavLink>
-        <NavLink href={"/#posts"}>Your Posts</NavLink>
+        <SignedIn>
+          <NavLink href={"/#posts"}>Your Posts</NavLink>
+        </SignedIn>
       </div>
 
       <div className="flex lg:justify-end lg:flex-1">
-        <div className="flex gap-2 items-center">
-          <NavLink href="/dashboard">Upload Video</NavLink>
-          {/* Profile */}
-          <NavLink href="/sign-in">Sign In</NavLink>
-        </div>
+        <SignedIn>
+          <div className="flex gap-2 items-center">
+            <NavLink href="/dashboard">Upload Video</NavLink>
+            <UserButton />
+          </div>
+        </SignedIn>
+        <SignedOut>
+          <SignInButton>
+            <NavLink href="/sign-in">Sign In</NavLink>
+          </SignInButton>
+        </SignedOut>
       </div>
     </nav>
   );
