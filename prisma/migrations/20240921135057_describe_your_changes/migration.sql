@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "User" ALTER COLUMN "customer_id" DROP NOT NULL,
+ALTER COLUMN "price_id" DROP NOT NULL,
+ALTER COLUMN "status" DROP NOT NULL;
