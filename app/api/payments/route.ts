@@ -31,10 +31,17 @@ export async function POST(req: NextRequest) {
             expand: ["line_items"],
           }
         );
-        console.log({ session });
+        console.log("checkout.session.completed", { session });
         // connect to the db create or update
         await handleCheckoutSessionCompleted({ session, stripe });
-        break;
+        return NextResponse.json(
+          {
+            status: "success",
+            message: "Checkout session completed",
+            data: session,
+          },
+          { status: 200 }
+        );
       }
 
       case "customer.subscription.deleted": {
@@ -43,15 +50,30 @@ export async function POST(req: NextRequest) {
         const subscription = await stripe.subscriptions.retrieve(
           subscriptionId
         );
-        console.log({ subscription });
+        console.log("customer.subscription.deleted", { subscription });
 
         await handleSubscriptionDeleted({ subscriptionId, stripe });
         // update the db
         // update users status to cancelled / revoke their access
-        break;
+        return NextResponse.json(
+          {
+            status: "success",
+            message: "Subscription deleted",
+            data: subscription,
+          },
+          { status: 200 }
+        );
       }
     }
+
+    return NextResponse.json(
+      { status: "success", message: "Event processed" },
+      { status: 200 }
+    );
   } catch (err) {
-    return NextResponse.json({ status: "Failed", error: err }, { status: 400 });
+    return NextResponse.json(
+      { status: "Failed", error: err, message: "Failed to process event" },
+      { status: 400 }
+    );
   }
 }
