@@ -9,9 +9,7 @@ export async function handleSubscriptionDeleted({
   stripe: Stripe;
 }) {
   try {
-    console.log("handleSubscriptionDeleted", subscriptionId);
     const subscription = await stripe.subscriptions.retrieve(subscriptionId);
-    console.log("subscription", subscription);
     await prisma.user.update({
       where: {
         customer_id: subscription.customer as string,
@@ -32,7 +30,6 @@ export async function handleCheckoutSessionCompleted({
   const customerId = session.customer as string;
   const customer = await stripe.customers.retrieve(customerId);
   const priceId = session.line_items?.data[0].price?.id as string;
-  console.log("customer", customer, priceId);
   if ("email" in customer && priceId) {
     await createOrUpdateUser(customer, customerId);
     // update user subscription

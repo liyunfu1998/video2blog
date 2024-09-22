@@ -31,7 +31,6 @@ export async function POST(req: NextRequest) {
             expand: ["line_items"],
           }
         );
-        console.log("checkout.session.completed", { session });
         // connect to the db create or update
         await handleCheckoutSessionCompleted({ session, stripe });
         return NextResponse.json(
@@ -50,7 +49,6 @@ export async function POST(req: NextRequest) {
         const subscription = await stripe.subscriptions.retrieve(
           subscriptionId
         );
-        console.log("customer.subscription.deleted", { subscription });
 
         await handleSubscriptionDeleted({ subscriptionId, stripe });
         // update the db
