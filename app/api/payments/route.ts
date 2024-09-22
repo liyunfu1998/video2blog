@@ -1,4 +1,7 @@
-import { handleCheckoutSessionCompleted } from "@/lib/payment-helpers";
+import {
+  handleCheckoutSessionCompleted,
+  handleSubscriptionDeleted,
+} from "@/lib/payment-helpers";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 
@@ -41,6 +44,8 @@ export async function POST(req: NextRequest) {
           subscriptionId
         );
         console.log({ subscription });
+
+        await handleSubscriptionDeleted({ subscriptionId, stripe });
         // update the db
         // update users status to cancelled / revoke their access
         break;

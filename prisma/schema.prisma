@@ -14,7 +14,7 @@ model User {
   user_id String?
   full_name String
   email String @unique
-  customer_id String?
+  customer_id String @unique
   price_id String?
   status String?
   createdAt DateTime @default(now())

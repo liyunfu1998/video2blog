@@ -1,5 +1,25 @@
 import Stripe from "stripe";
 import prisma from "./prisma";
+
+export async function handleSubscriptionDeleted({
+  subscriptionId,
+  stripe,
+}: {
+  subscriptionId: string;
+  stripe: Stripe;
+}) {
+  try {
+    const subscription = await stripe.subscriptions.retrieve(subscriptionId);
+    await prisma.user.update({
+      where: {
+        customer_id: subscription.customer as string,
+      },
+      data: {
+        status: "canceled",
+      },
+    });
+  } catch (error) {}
+}
 export async function handleCheckoutSessionCompleted({
   session,
   stripe,
