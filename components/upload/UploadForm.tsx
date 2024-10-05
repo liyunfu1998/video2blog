@@ -2,6 +2,9 @@
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { z } from "zod";
+import { useToast } from "@/hooks/use-toast";
+import { useUploadThing } from "@/uatils/uploadthing";
+
 const schema = z.object({
   file: z
     .instanceof(File, { message: "Invalid file" })
@@ -16,6 +19,19 @@ const schema = z.object({
     ),
 });
 export default function UploadForm() {
+  const { toast } = useToast();
+  const { startUpload } = useUploadThing("videoOrAudioUploader", {
+    onClientUploadComplete: () => {
+      toast({ title: "uploaded successfully" });
+    },
+    onUploadError: () => {
+      console.log("error");
+      toast({ title: "Something went wrong", variant: "destructive" });
+    },
+    onUploadBegin: () => {
+      toast({ title: "Upload has begun 🚀" });
+    },
+  });
   const handleTranscribe = async (formData: FormData) => {
     const file = formData.get("file") as File;
 
@@ -26,6 +42,17 @@ export default function UploadForm() {
         "validatedFields",
         validatedFields.error.flatten().fieldErrors
       );
+      toast({
+        title: "Something went wrong",
+        description:
+          validatedFields.error.flatten().fieldErrors.file?.[0] ??
+          "Invalid file",
+        variant: "destructive",
+      });
+    }
+
+    if (file) {
+      const resp = await startUpload([file]);
     }
   };
   return (
