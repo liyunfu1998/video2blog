@@ -4,6 +4,7 @@ import { Input } from "../ui/input";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
 import { useUploadThing } from "@/uatils/uploadthing";
+import { transcribeUploadedFile } from "@/actions/upload-actions";
 
 const schema = z.object({
   file: z
@@ -53,6 +54,24 @@ export default function UploadForm() {
 
     if (file) {
       const resp = await startUpload([file]);
+
+      console.log(resp);
+
+      if (!resp) {
+        toast({
+          title: "Something went wrong",
+          description: "Please use a different file",
+          variant: "destructive",
+        });
+      }
+      toast({
+        title: "🎤 Transcription is in progress...",
+        description:
+          "Hang tight! Our digital wizards are sprinkling magic dust on your file!",
+      });
+
+      const result = await transcribeUploadedFile(resp);
+      console.log("openai", { result });
     }
   };
   return (
