@@ -50,7 +50,7 @@ export default function UploadForm() {
       });
 
       try {
-        const response = await fetch("/api/aitransform", {
+        const response = await fetch("/api/transcriptions", {
           method: "POST",
           body: formData,
         });
