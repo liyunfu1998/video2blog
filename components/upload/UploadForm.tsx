@@ -3,7 +3,6 @@ import { Button } from "../ui/button";
 import { Input } from "../ui/input";
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
-import { uploadAction } from "@/actions/upload-action";
 import { useState } from "react";
 
 const schema = z.object({
@@ -83,10 +82,6 @@ export default function UploadForm() {
 
         // You can now use the complete transcription as needed
         console.log("Complete transcription:", accumulatedTranscription);
-
-        // Call uploadAction if needed
-        const uploadResponse = await uploadAction();
-        console.log("Upload response:", { uploadResponse });
       } catch (error) {
         console.error("Error during transcription:", error);
         toast({
